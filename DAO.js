@@ -27,7 +27,7 @@ const postStaff = async (staff) => {
   }
 };
 const checkNull = (value) => {
-  if (value == "NULL") return "NULL";
+  if (value == "NULL" || !value) return "NULL";
   else return `N'${value}'`;
 };
 const updateStaff = async (staff) => {
@@ -36,11 +36,13 @@ const updateStaff = async (staff) => {
     const result = await pool.request().query(`
     EXECUTE Update_staff_by_id ${staff.id}, ${
       staff.identification
-    }, ${checkNull(staff.name)}, ${staff.gender}, ${staff.date_of_birth}, ${
-      staff.manager_id
-    }, ${checkNull(staff.province)},${checkNull(staff.district)} ,${checkNull(
-      staff.ward
-    )}, ${checkNull(staff.address_number)}, ${staff.res_id}, ${staff.accID}`);
+    }, ${checkNull(staff.name)}, ${staff.gender}, ${checkNull(
+      staff.date_of_birth
+    )}, ${staff.manager_id}, ${checkNull(staff.province)},${checkNull(
+      staff.district
+    )} ,${checkNull(staff.ward)}, ${checkNull(staff.address_number)}, ${
+      staff.res_id
+    }, ${staff.accID}`);
     return "Updated staff";
   } catch (err) {
     throw err.originalError.info.message;
