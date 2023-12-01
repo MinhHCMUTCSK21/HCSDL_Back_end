@@ -61,6 +61,16 @@ app.get("/restaurant", async (req, res) => {
   }
 });
 
+app.get("/table", async (req, res) => {
+  try {
+    const data = await DAO.getTable();
+    res.json({ success: true, data: data });
+  } catch (err) {
+    console.log(err);
+    res.json({ success: false, data: err });
+  }
+});
+
 app.post("/table", async (req, res) => {
   try {
     const data = await DAO.insertTable(req.body.table);
@@ -74,6 +84,7 @@ app.post("/table", async (req, res) => {
 app.delete("/table", async (req, res) => {
   try {
     const data = await DAO.deleteTable(req.query.table_id, req.query.res_id);
+
     res.json({ success: true, data: data });
   } catch (err) {
     res.json({ success: false, data: err });
@@ -93,6 +104,9 @@ app.post("/bill/create_bill", async (req, res) => {
 app.get("/food", async (req, res) => {
   try {
     const data = await DAO.getFood();
+
+    console.log("huy vao ne ");
+
     res.json({ success: true, data: data });
   } catch (err) {
     console.log(err);
@@ -185,9 +199,20 @@ app.get("/dish_included", async (req, res) => {
     res.json({ success: false, data: err });
   }
 });
+
 app.get("/promo", async (req, res) => {
   try {
     const data = await DAO.getPromo(req.query.bill_id);
+    res.json({ success: true, data: data });
+  } catch (err) {
+    console.log(err);
+    res.json({ success: false, data: err });
+  }
+});
+
+app.get("/promotions", async (req, res) => {
+  try {
+    const data = await DAO.getPromotions();
     res.json({ success: true, data: data });
   } catch (err) {
     console.log(err);

@@ -93,6 +93,19 @@ const getRestaurant = async () => {
   }
 };
 
+const getTable = async () => {
+  try {
+    const pool = await sql.connect(config);
+    const result = await pool.request().query(`
+       SELECT * FROM r_table`);
+    return result.recordset;
+  } catch (err) {
+    throw err.originalError.info.message;
+  } finally {
+    sql.close();
+  }
+};
+
 const insertTable = async (table) => {
   try {
     const pool = await sql.connect(config);
@@ -114,7 +127,8 @@ const deleteTable = async (table_id, res_id) => {
     const result = await pool.request().query(`
           DELETE FROM r_table
           WHERE table_id = '${table_id}' AND res_id = '${res_id}'`);
-    return "Deleted ";
+
+    return "Deleted";
   } catch (err) {
     throw err.originalError.info.message;
   } finally {
@@ -304,6 +318,20 @@ const getPromo = async (bill_id) => {
   }
 };
 
+const getPromotions = async () => {
+  try {
+    const pool = await sql.connect(config);
+    const result = await pool
+      .request()
+      .query(`SELECT promotion.* FROM promotion`);
+    return result.recordset;
+  } catch (err) {
+    throw err.originalError.info.message;
+  } finally {
+    sql.close();
+  }
+};
+
 const getEmployeeIn = async (agemin, agemax) => {
   try {
     const pool = await sql.connect(config);
@@ -383,6 +411,7 @@ module.exports = {
   insertCustomer,
   getAcc,
   addFood,
+  getTable,
   getBill,
   getDishIncluded,
   updateFoodCount,
@@ -390,6 +419,7 @@ module.exports = {
   updatePay,
   deleteFood,
   getPromo,
+  getPromotions,
   getEmployeeIn,
   getCustomerIn,
   getBestSeller,
