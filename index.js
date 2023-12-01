@@ -61,6 +61,16 @@ app.get("/restaurant", async (req, res) => {
   }
 });
 
+app.get("/reservedTable", async (req, res) => {
+  try {
+    const data = await DAO.getReservedTable();
+    res.json({ success: true, data: data });
+  } catch (err) {
+    console.log(err);
+    res.json({ success: false, data: err });
+  }
+});
+
 app.get("/table", async (req, res) => {
   try {
     const data = await DAO.getTable();
@@ -84,7 +94,6 @@ app.post("/table", async (req, res) => {
 app.delete("/table", async (req, res) => {
   try {
     const data = await DAO.deleteTable(req.query.table_id, req.query.res_id);
-
     res.json({ success: true, data: data });
   } catch (err) {
     res.json({ success: false, data: err });

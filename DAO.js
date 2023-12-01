@@ -93,6 +93,19 @@ const getRestaurant = async () => {
   }
 };
 
+const getReservedTable = async () => {
+  try {
+    const pool = await sql.connect(config);
+    const result = await pool.request().query(`
+       SELECT * FROM reser_arrange_table`);
+    return result.recordset;
+  } catch (err) {
+    throw err.originalError.info.message;
+  } finally {
+    sql.close();
+  }
+};
+
 const getTable = async () => {
   try {
     const pool = await sql.connect(config);
@@ -424,4 +437,5 @@ module.exports = {
   getCustomerIn,
   getBestSeller,
   revenueStat,
+  getReservedTable,
 };
