@@ -113,9 +113,6 @@ app.post("/bill/create_bill", async (req, res) => {
 app.get("/food", async (req, res) => {
   try {
     const data = await DAO.getFood();
-
-    console.log("huy vao ne ");
-
     res.json({ success: true, data: data });
   } catch (err) {
     console.log(err);
@@ -255,7 +252,12 @@ app.get("/customer_pay", async (req, res) => {
 app.get("/best_seller", async (req, res) => {
   try {
     const data = await DAO.getBestSeller(req.query.month, req.query.year);
-    res.json({ success: true, data: data });
+
+    if (data.length > 0) {
+      res.json({ success: true, data: data[0].bestSeller });
+    } else {
+      res.json({ success: true, data: "There is no best seller!" });
+    }
   } catch (err) {
     console.log(err);
     res.json({ success: false, data: err });
@@ -265,7 +267,11 @@ app.get("/best_seller", async (req, res) => {
 app.get("/revenue", async (req, res) => {
   try {
     const data = await DAO.revenueStat(req.query.year, req.query.res_id);
-    res.json({ success: true, data: data });
+    if (data.length > 0) {
+      res.json({ success: true, data: data[0].result });
+    } else {
+      res.json({ success: true, data: "There is no revenue!" });
+    }
   } catch (err) {
     console.log(err);
     res.json({ success: false, data: err });
