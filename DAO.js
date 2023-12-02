@@ -380,9 +380,7 @@ const getBestSeller = async (month, year) => {
     const pool = await sql.connect(config);
     const result = await pool
       .request()
-      .query(
-        `select dbo.most_fav_dish('${month}','${year}') as N'Món ăn yêu thích nhất'`
-      );
+      .query(`select dbo.most_fav_dish('${month}','${year}') as N'bestSeller'`);
     console.log(result);
     return result.recordset;
   } catch (err) {
@@ -398,7 +396,7 @@ const revenueStat = async (year, res_id) => {
     const result = await pool
       .request()
       .query(
-        `select [dbo].[income_in_year] ('${year}','${res_id}') AS 'Result'`
+        `select [dbo].[income_in_year] ('${year}','${res_id}') AS 'result'`
       );
     console.log(result);
     return result.recordset;
