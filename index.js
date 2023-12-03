@@ -149,6 +149,16 @@ app.get("/acc", async (req, res) => {
   }
 });
 
+app.post("/acc", async (req, res) => {
+  try {
+    const data = await DAO.createAcc(req.body.account);
+    res.json({ success: true, data: data });
+  } catch (err) {
+    console.log(err);
+    res.json({ success: false, data: err });
+  }
+});
+
 app.post("/bill/add", async (req, res) => {
   try {
     const data = await DAO.addFood(req.body.dish_included);
