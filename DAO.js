@@ -203,6 +203,20 @@ const insertCustomer = async (cus) => {
   }
 };
 
+const createAcc = async (obj) => {
+  try {
+    const pool = await sql.connect(config);
+    const result = await pool.request().query(`INSERT INTO account
+    VALUES
+      ('${obj.account_id}', '${obj.account_password}');`);
+    return "Create account successfully";
+  } catch (err) {
+    throw err.originalError.info.message;
+  } finally {
+    sql.close();
+  }
+};
+
 const getAcc = async () => {
   try {
     const pool = await sql.connect(config);
@@ -420,6 +434,7 @@ module.exports = {
   getFood,
   getCustomer,
   insertCustomer,
+  createAcc,
   getAcc,
   addFood,
   getTable,
