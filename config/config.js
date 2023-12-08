@@ -1,7 +1,7 @@
 const config = {
-  user: "sa",
-  password: "Password.1",
-  server: "localhost",
+  user: "minh",
+  password: "123",
+  server: "MSIMODERN14",
   database: "btlfinal",
   options: {
     trustServerCertificate: true,
