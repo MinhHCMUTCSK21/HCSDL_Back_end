@@ -71,6 +71,16 @@ app.get("/reservedTable", async (req, res) => {
   }
 });
 
+app.post("/reservation", async (req, res) => {
+  try {
+    const data = await DAO.bookReservation(req.body.reservation);
+    res.json({ success: true, data: data });
+  } catch (err) {
+    console.log(err);
+    res.json({ success: false, data: err });
+  }
+});
+
 app.get("/table", async (req, res) => {
   try {
     const data = await DAO.getTable();
