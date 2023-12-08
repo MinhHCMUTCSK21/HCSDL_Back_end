@@ -119,6 +119,27 @@ const getTable = async () => {
   }
 };
 
+const bookReservation = async (obj) => {
+  try {
+    const pool = await sql.connect(config);
+    await pool.request().query(`
+        INSERT INTO reservation
+        VALUES
+      ('${obj.reservation_id}', '${obj.slot_count}', convert(datetime,'${obj.date_time}',120), '${obj.cus_id}');`);
+
+    await pool.request().query(`
+        INSERT INTO reser_arrange_table
+        VALUES
+      ('${obj.reservation_id}', '${obj.res_id}', '${obj.table_id}');`);
+
+    return "Booked successfully";
+  } catch (err) {
+    throw err.originalError.info.message;
+  } finally {
+    sql.close();
+  }
+};
+
 const insertTable = async (table) => {
   try {
     const pool = await sql.connect(config);
@@ -451,4 +472,5 @@ module.exports = {
   getBestSeller,
   revenueStat,
   getReservedTable,
+  bookReservation,
 };
