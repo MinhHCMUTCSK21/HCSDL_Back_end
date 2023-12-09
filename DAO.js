@@ -22,8 +22,6 @@ const postStaff = async (staff) => {
   try {
     const pool = await sql.connect(config);
 
-    console.log(staff);
-
     const result = await pool.request().query(`
     EXECUTE Add_staff ${checkNull(staff.identification)}, ${checkNull(
       staff.name
