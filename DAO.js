@@ -1,6 +1,11 @@
 const config = require("./config/config");
 const sql = require("mssql");
 
+const checkNull = (value) => {
+  if (value == "NULL" || !value) return "NULL";
+  else return `N'${value}'`;
+};
+
 const getStaff = async () => {
   try {
     const pool = await sql.connect(config);
@@ -16,33 +21,44 @@ const getStaff = async () => {
 const postStaff = async (staff) => {
   try {
     const pool = await sql.connect(config);
+
+    console.log(staff);
+
     const result = await pool.request().query(`
-    EXECUTE Add_staff '${staff.identification}', N'${staff.name}', ${staff.gender}, '${staff.date_of_birth}', ${staff.manager_id}, N'${staff.province}', N'${staff.district}', N'${staff.ward}', N'${staff.address_number}', '${staff.res_id}','${staff.email}', '${staff.phone_number}', '${staff.accID}'
+    EXECUTE Add_staff ${checkNull(staff.identification)}, ${checkNull(
+      staff.name
+    )}, ${staff.gender}, ${checkNull(staff.date_of_birth)}, ${checkNull(
+      staff.manager_id
+    )}, ${checkNull(staff.province)}, ${checkNull(staff.district)}, ${checkNull(
+      staff.ward
+    )}, ${checkNull(staff.address_number)}, ${checkNull(
+      staff.res_id
+    )},${checkNull(staff.email)}, ${checkNull(staff.phone_number)}, ${checkNull(
+      staff.accID
+    )}
     `);
     return "Inserted staff";
   } catch (err) {
+    console.log(err);
     throw err.originalError.info.message;
   } finally {
     sql.close();
   }
 };
-const checkNull = (value) => {
-  if (value == "NULL" || !value) return "NULL";
-  else return `N'${value}'`;
-};
+
 const updateStaff = async (staff) => {
   try {
     const pool = await sql.connect(config);
     const result = await pool.request().query(`
-    EXECUTE Update_staff_by_id ${staff.id}, ${
+    EXECUTE Update_staff_by_id ${staff.id}, ${checkNull(
       staff.identification
-    }, ${checkNull(staff.name)}, ${staff.gender}, ${checkNull(
+    )}, ${checkNull(staff.name)}, ${staff.gender}, ${checkNull(
       staff.date_of_birth
     )}, ${staff.manager_id}, ${checkNull(staff.province)},${checkNull(
       staff.district
-    )} ,${checkNull(staff.ward)}, ${checkNull(staff.address_number)}, ${
-      staff.res_id
-    }, ${staff.accID}`);
+    )} ,${checkNull(staff.ward)}, ${checkNull(
+      staff.address_number
+    )}, ${checkNull(staff.res_id)}, ${checkNull(staff.accID)}`);
     return "Updated staff";
   } catch (err) {
     throw err.originalError.info.message;
